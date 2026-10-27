@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>2027 巴黎瑞士名單</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&display=swap">
+<style>
+  /* 版面：上方摘要＋待辦 → 我負責的兩團（特早鳥、大團）→ 早鳥僅供參考；每團依票種分卡，名字四人一排 */
+  :root{
+    --bg:#f3f4f6; --surface:#ffffff; --surface-2:#f8f9fb; --fg:#1c2230; --muted:#5f6878; --line:#dde1e8;
+    --alps:#245d8a; --alps-soft:#e6eff7; --paris:#8e2f47; --paris-soft:#f7e9ed; --self:#6b7280; --self-soft:#eceef1;
+    --t-group:#245d8a; --t-indiv:#a8650a; --t-prem:#5b45a6; --t-biz:#16704f; --t-eco:#0b7d8c; --t-ek:#a8302b;
+    --ok:#16704f; --ok-soft:#e3f3ec; --warn:#b42318; --warn-soft:#fdecea;
+    --display:"Noto Serif TC","PMingLiU",serif;
+    --body:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#14171d; --surface:#1d2129; --surface-2:#232832; --fg:#e8eaee; --muted:#a2a9b6; --line:#333a46;
+    --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
+    --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c; color-scheme:dark }}
+  :root[data-theme="dark"]{
+    --bg:#14171d; --surface:#1d2129; --surface-2:#232832; --fg:#e8eaee; --muted:#a2a9b6; --line:#333a46;
+    --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
+    --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c; color-scheme:dark }
+
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font:18px/1.6 var(--body)}
+  .wrap{max-width:1080px;margin:0 auto;padding-block:28px 64px;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+    display:flex;flex-direction:column;gap:24px}
+  h1,h2{font-family:var(--display);text-wrap:balance;margin:0}
+  h1{font-size:32px;line-height:1.25}
+  .lede{margin:6px 0 0;color:var(--muted);font-size:16px}
+
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .sum{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:2px}
+  .sum .k{font-size:15px;color:var(--muted);letter-spacing:.04em}
+  .sum .v{font-size:36px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+  .sum .v small{font-size:17px;font-weight:400;color:var(--muted);margin-left:4px}
+  .sum.alps .v{color:var(--alps)} .sum.paris .v{color:var(--paris)} .sum.self .v{color:var(--self)}
+  .sum .tag{align-self:flex-start;font-size:13px;border-radius:99px;padding:0 9px;margin-top:4px}
+  .tag.mine{background:var(--ok-soft);color:var(--ok);font-weight:700}
+  .tag.ref{background:var(--self-soft);color:var(--self)}
+
+  .todo{background:var(--warn-soft);border-radius:12px;padding:14px 20px}
+  .todo h2{font-family:var(--body);font-size:19px;color:var(--warn);margin-bottom:6px}
+  .todo ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:2px}
+
+  .search{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .search label{font-weight:700}
+  .search input{flex:1;min-width:0;max-width:340px;font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+  .search input:focus-visible{outline:3px solid var(--alps);outline-offset:1px}
+  #hit{color:var(--muted);font-size:16px}
+
+  .trip{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .trip-head{padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .trip.alps .trip-head{background:var(--alps-soft)} .trip.paris .trip-head{background:var(--paris-soft)} .trip.self .trip-head{background:var(--self-soft)}
+  .trip.alps h2{color:var(--alps)} .trip.paris h2{color:var(--paris)} .trip.self h2{color:var(--self)}
+  .trip-head h2{font-size:25px}
+  .trip-head p{margin:2px 0 0;color:var(--muted);font-size:16px}
+  .trip-head .tag{font-size:15px;padding:2px 12px;border-radius:99px}
+  .trip.self{opacity:.92}
+
+  .route{display:flex;flex-wrap:wrap;gap:6px 0;padding:14px 22px;border-bottom:1px solid var(--line);font-size:16px}
+  .stop{display:flex;align-items:flex-start}
+  .stop:not(:last-child)::after{content:"›";color:var(--muted);padding:0 12px;font-size:20px;line-height:1.4}
+  .stop div b{display:block;font-size:14px;color:var(--muted);letter-spacing:.03em;font-variant-numeric:tabular-nums}
+  .stop div span{display:block;font-size:14px;color:var(--muted)}
+
+  .inner{padding:20px 22px;display:flex;flex-direction:column;gap:16px}
+  .carrier{display:flex;flex-direction:column;gap:12px}
+  .carrier-h{font-weight:700;font-size:18px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .carrier-h .note{font-weight:400}
+  .flights{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .fl{background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:16px;min-width:0}
+  .fl h3{margin:0 0 4px;font-size:15px;color:var(--muted);letter-spacing:.06em}
+  .leg{display:grid;grid-template-columns:62px 1fr;gap:8px;font-variant-numeric:tabular-nums}
+  .leg code{font-family:inherit;font-weight:700}
+  .leg .no{color:var(--muted);font-weight:400}
+
+  .tix{border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .tix-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .chip{font-size:16px;font-weight:700;color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:0 10px}
+  .count{font-weight:700;font-variant-numeric:tabular-nums}
+  .note{color:var(--muted);font-size:15px}
+  .warn-note{color:var(--warn);font-size:15px;font-weight:700}
+  .t-group{--c:var(--t-group)} .t-indiv{--c:var(--t-indiv)} .t-prem{--c:var(--t-prem)} .t-biz{--c:var(--t-biz)} .t-eco{--c:var(--t-eco)} .t-ek{--c:var(--t-ek)} .t-paris{--c:var(--paris)} .t-self{--c:var(--self)}
+
+  .names{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .n{background:var(--surface-2);border-radius:8px;padding:6px 12px;font-size:20px;display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
+  .n small{font-size:13px;border-radius:6px;padding:1px 7px;white-space:nowrap}
+  .n .ok{color:var(--ok);background:var(--ok-soft)}
+  .n .bad{color:var(--warn);background:var(--warn-soft);font-weight:700}
+  .n.flag{box-shadow:inset 0 0 0 1.5px var(--warn)}
+  .n.hit{box-shadow:inset 0 0 0 3px var(--alps);background:var(--alps-soft)}
+  .dim .n:not(.hit){opacity:.35}
+
+  .foot{color:var(--muted);font-size:14px}
+  @media (max-width:760px){
+    h1{font-size:26px}
+    .summary{grid-template-columns:1fr}
+    .flights{grid-template-columns:1fr}
+    .names{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .route{flex-direction:column}
+    .stop:not(:last-child)::after{content:""}
+  }
+  @media (prefers-reduced-motion:no-preference){ .n{transition:opacity .15s, box-shadow .15s} }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <h1>2027 巴黎瑞士之旅　名單與機票</h1>
+    <p class="lede">我負責：特早鳥＋大團，共 49 人。早鳥 4 人也列在最下面，只供參考。資料取自試算表「名單」「工作表2」，整理於 2026/10/27。</p>
+  </header>
+
+  <div class="summary">
+    <div class="sum alps"><span class="k">特早鳥・先瑞士再巴黎</span><span class="v">40<small>人</small></span><span class="tag mine">我負責</span></div>
+    <div class="sum paris"><span class="k">大團・直飛巴黎</span><span class="v">9<small>人</small></span><span class="tag mine">我負責</span></div>
+    <div class="sum self"><span class="k">早鳥・自行處理機票</span><span class="v">4<small>人</small></span><span class="tag ref">僅供參考</span></div>
+  </div>
+
+  <section class="todo" aria-labelledby="todo-h">
+    <h2 id="todo-h">還沒搞定（4 件）</h2>
+    <ul>
+      <li><b>詹秀鑾</b>（大團）缺護照</li>
+      <li><b>劉月珠、劉姸庭</b>（大團）商務艙還沒買</li>
+      <li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li>
+      <li>國泰、阿聯酋回程的<b>航班號</b>表上沒填</li>
+    </ul>
+  </section>
+
+  <div class="search">
+    <label for="q">找人</label>
+    <input id="q" type="search" placeholder="輸入姓名，例如：王人美" autocomplete="off">
+    <span id="hit" aria-live="polite"></span>
+  </div>
+
+  <!-- ===== 特早鳥 ===== -->
+  <section class="trip alps" id="early">
+    <div class="trip-head">
+      <div><h2>特早鳥｜先瑞士、再巴黎</h2><p>3/30 出發，3/31 抵蘇黎世，4/8 回台</p></div>
+      <span class="tag mine">我負責・40 人</span>
+    </div>
+    <div class="route">
+      <div class="stop"><div><b>3/30</b>出發</div></div>
+      <div class="stop"><div><b>3/31</b>抵蘇黎世</div></div>
+      <div class="stop"><div><b>3/31～4/2</b>瑞士 3 天 2 夜<span>1 住宿＋1 晚餐＋1 行程<br>4/2 下午公司負責</span></div></div>
+      <div class="stop"><div><b>4/3</b>搭火車回巴黎</div></div>
+      <div class="stop"><div><b>4/2～4/7</b>公司行程</div></div>
+      <div class="stop"><div><b>4/7～4/8</b>回程</div></div>
+    </div>
+    <div class="inner">
+
+      <div class="carrier">
+        <div class="carrier-h">國泰航空・高雄出發 <span class="note">37 人</span></div>
+        <div class="flights">
+          <div class="fl"><h3>去程</h3>
+            <div class="leg"><code>CX459</code><span>3/30　高雄 KHH 19:10 → 香港 HKG 20:50</span></div>
+            <div class="leg"><code>CX383</code><span>3/31　香港 HKG 00:25 → 蘇黎世 ZRH 07:30</span></div>
+          </div>
+          <div class="fl"><h3>回程</h3>
+            <div class="leg"><code class="no">未填</code><span>4/7　巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）</span></div>
+            <div class="leg"><code class="no">未填</code><span>4/8　香港 HKG 08:35 → 高雄 KHH 10:10</span></div>
+          </div>
+        </div>
+
+        <div class="tix t-group">
+          <div class="tix-h"><span class="chip">團體票・經濟艙</span><span class="count">19 人</span></div>
+          <div class="names">
+            <div class="n">吳佳臻</div><div class="n">李秀鳳</div><div class="n">呂元訓</div><div class="n">林欣儀</div>
+            <div class="n">呂建輝</div><div class="n">江美欣</div><div class="n">許六美</div><div class="n">陳瑞祥</div>
+            <div class="n">蔡汶靜</div><div class="n">郭建良</div><div class="n">李明庭</div><div class="n">田宜樺</div>
+            <div class="n">孫艾伶</div><div class="n">孫澤宗</div><div class="n">陳玉婷</div><div class="n">鄭淑音</div>
+            <div class="n">鄭淑子</div><div class="n">伍莉婷</div><div class="n">鄭音潔</div>
+          </div>
+        </div>
+
+        <div class="tix t-indiv">
+          <div class="tix-h"><span class="chip">個別票</span><span class="count">7 人</span><span class="note">10/27 開票</span></div>
+          <div class="names">
+            <div class="n">黃薰萱</div><div class="n">黃薰儀</div><div class="n">吳青蓉</div><div class="n">黃楠幃</div>
+            <div class="n">許怡節</div><div class="n">邱進榮</div><div class="n">陳茂盛</div>
+          </div>
+        </div>
+
+        <div class="tix t-prem">
+          <div class="tix-h"><span class="chip">豪華經濟艙</span><span class="count">5 人</span><span class="note">已購買</span></div>
+          <div class="names">
+            <div class="n">王晨熙</div><div class="n">王昱程</div><div class="n">許巧琳</div><div class="n">林孝恩</div>
+            <div class="n">劉蘭瑛</div>
+          </div>
+        </div>
+
+        <div class="tix t-biz">
+          <div class="tix-h"><span class="chip">商務艙</span><span class="count">3 人</span><span class="note">已購買</span></div>
+          <div class="names">
+            <div class="n">王人美</div><div class="n">洪儷娟</div><div class="n">洪勝全</div>
+          </div>
+        </div>
+
+        <div class="tix t-eco">
+          <div class="tix-h"><span class="chip">經濟艙+</span><span class="count">3 人</span><span class="warn-note">表上沒寫是否已買</span></div>
+          <div class="names">
+            <div class="n">賴憶晴</div><div class="n">賴駿宏</div><div class="n">賴黃寶素</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carrier">
+        <div class="carrier-h">阿聯酋航空・桃園出發 <span class="note">3 人</span><span class="warn-note">抵蘇黎世 13:20，比國泰晚約 6 小時</span></div>
+        <div class="flights">
+          <div class="fl"><h3>去程</h3>
+            <div class="leg"><code>EK367</code><span>3/30　桃園 TPE 23:05 → 杜拜 DXB 04:35（3/31）</span></div>
+            <div class="leg"><code>EK087</code><span>3/31　杜拜 DXB 08:40 → 蘇黎世 ZRH 13:20</span></div>
+          </div>
+          <div class="fl"><h3>回程</h3>
+            <div class="leg"><code>EK074</code><span>4/7　巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）</span></div>
+            <div class="leg"><code class="no">未填</code><span>4/8　杜拜 DXB 03:45 → 桃園 TPE 16:10</span></div>
+          </div>
+        </div>
+        <div class="tix t-ek">
+          <div class="tix-h"><span class="chip">阿聯酋・桃園出</span><span class="count">3 人</span></div>
+          <div class="names">
+            <div class="n">宋文賢</div><div class="n">韋俞丞</div><div class="n">廖釗儷</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 大團 ===== -->
+  <section class="trip paris" id="main">
+    <div class="trip-head">
+      <div><h2>大團｜直飛巴黎</h2><p>3/31 出發，4/1 抵巴黎，4/8 回台</p></div>
+      <span class="tag mine">我負責・9 人</span>
+    </div>
+    <div class="route">
+      <div class="stop"><div><b>3/31</b>出發</div></div>
+      <div class="stop"><div><b>4/1</b>抵巴黎</div></div>
+      <div class="stop"><div><b>4/2～4/7</b>公司行程</div></div>
+      <div class="stop"><div><b>4/7～4/8</b>回程</div></div>
+    </div>
+    <div class="inner">
+      <div class="carrier">
+        <div class="carrier-h">國泰航空・高雄出發 <span class="note">9 人</span></div>
+        <div class="flights">
+          <div class="fl"><h3>去程</h3>
+            <div class="leg"><code>CX459</code><span>3/31　高雄 KHH 19:10 → 香港 HKG 20:50</span></div>
+            <div class="leg"><code>CX261</code><span>4/1　香港 HKG 00:05 → 巴黎 CDG 07:55</span></div>
+          </div>
+          <div class="fl"><h3>回程（和特早鳥同班）</h3>
+            <div class="leg"><code class="no">未填</code><span>4/7　巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）</span></div>
+            <div class="leg"><code class="no">未填</code><span>4/8　香港 HKG 08:35 → 高雄 KHH 10:10</span></div>
+          </div>
+        </div>
+        <div class="tix t-paris">
+          <div class="tix-h"><span class="chip">大團名單</span><span class="count">9 人</span><span class="note">6 人已訂機票、3 人待處理</span></div>
+          <div class="names">
+            <div class="n">黃怡潔<small class="ok">已訂</small></div>
+            <div class="n">陳畇臻<small class="ok">已訂</small></div>
+            <div class="n">陳林𪧓鐘<small class="ok">已訂</small></div>
+            <div class="n">張愷芳<small class="ok">已訂</small></div>
+            <div class="n flag">詹秀鑾<small class="bad">缺護照</small></div>
+            <div class="n">王俐涵<small class="ok">已訂</small></div>
+            <div class="n">林偉龍<small class="ok">已訂</small></div>
+            <div class="n flag">劉月珠<small class="bad">商務艙未買</small></div>
+            <div class="n flag">劉姸庭<small class="bad">商務艙未買</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 早鳥（參考） ===== -->
+  <section class="trip self" id="self">
+    <div class="trip-head">
+      <div><h2>早鳥｜自行處理機票</h2><p>不是我負責，列出來參考。表上註記：自行處理機票／不參加行程</p></div>
+      <span class="tag ref">僅供參考・4 人</span>
+    </div>
+    <div class="inner">
+      <div class="tix t-self">
+        <div class="tix-h"><span class="chip">早鳥名單</span><span class="count">4 人</span></div>
+        <div class="names">
+          <div class="n">吳孟容</div><div class="n">林煒智</div><div class="n">原佩蘭</div><div class="n">劉李腰</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">總計 53 人＝特早鳥 40（團體 19＋個別 7＋豪經 5＋商務 3＋經濟艙+ 3＋阿聯酋 3）＋大團 9＋早鳥 4</p>
+</div>
+
+<script>
+  (function(){
+    var q = document.getElementById('q'), hit = document.getElementById('hit');
+    var names = Array.prototype.slice.call(document.querySelectorAll('.n'));
+    var wrap = document.querySelector('.wrap');
+    q.addEventListener('input', function(){
+      var v = q.value.trim();
+      var found = [];
+      names.forEach(function(el){
+        var name = el.firstChild.textContent.trim();
+        var on = v && name.indexOf(v) !== -1;
+        el.classList.toggle('hit', !!on);
+        if (on) found.push(el);
+      });
+      wrap.classList.toggle('dim', !!v);
+      if (!v) { hit.textContent = ''; return; }
+      if (!found.length) { hit.textContent = '找不到「' + v + '」'; return; }
+      var trip = found[0].closest('.trip').querySelector('h2').textContent;
+      var tix = found[0].closest('.tix').querySelector('.chip').textContent;
+      hit.textContent = found.length === 1 ? (trip.split('｜')[0] + '・' + tix) : ('找到 ' + found.length + ' 人');
+      found[0].scrollIntoView({block:'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    });
+  })();
+</script>
+
+</body>
+</html>
