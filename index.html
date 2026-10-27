@@ -13,6 +13,8 @@
     --bg:#f7f1e8; --bg-2:#efe5d6; --surface:#ffffff; --surface-2:#fbf7f1; --fg:#2f2a26; --muted:#7a6f66; --line:#e8dfd2;
     --alps:#2b5f8e; --alps-soft:#e7eff7; --paris:#9a3450; --paris-soft:#f8e8ed; --self:#857a70; --self-soft:#f0ebe5;
     --gold:#b8934a; --gold-deep:#8d6c2c; --gold-ghost:rgba(184,147,74,.16);
+    /* 航空公司主色：國泰墨綠、阿聯酋紅（色帶用 --cx/--ek，文字用 -ink） */
+    --cx:#006564; --cx-ink:#006564; --ek:#c8102e; --ek-ink:#c8102e;
     --t-group:#245d8a; --t-indiv:#a8650a; --t-prem:#5b45a6; --t-biz:#16704f; --t-eco:#0b7d8c; --t-ek:#a8302b;
     --ok:#16704f; --ok-soft:#e3f3ec; --warn:#b42318; --warn-soft:#fdecea;
     --s-group:#e2edf8; --s-indiv:#fdf0d6; --s-prem:#ece7fa; --s-biz:#dff3e8; --s-eco:#dcf3f5; --s-ek:#fde6dc; --s-paris:#f8e5ec; --s-self:#eceef1;
@@ -31,11 +33,12 @@
     --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
     --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
     --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
-    --s-group:#1c2c3c; --s-indiv:#382b15; --s-prem:#2a2541; --s-biz:#183226; --s-eco:#15343a; --s-ek:#3b2419; --s-paris:#3a2229; --s-self:#2a2e36; color-scheme:dark }}
+    --s-group:#1c2c3c; --s-indiv:#382b15; --s-prem:#2a2541; --s-biz:#183226; --s-eco:#15343a; --s-ek:#3b2419; --s-paris:#3a2229; --s-self:#2a2e36; --cx-ink:#4cc2b6; --ek-ink:#ff7a7a; color-scheme:dark }}
   :root[data-theme="dark"]{
     --bg:#17161a; --bg-2:#1d1b20; --surface:#232127; --surface-2:#2a282f; --fg:#ece7e1; --muted:#b0a69c; --line:#3a3640;
     --gold:#d9b46a; --gold-deep:#e6c788; --gold-ghost:rgba(217,180,106,.16);
     --shadow:0 12px 36px rgba(0,0,0,.35); --tint-1:rgba(90,147,195,.12); --tint-2:rgba(207,111,136,.10); --tint-3:rgba(217,180,106,.10);
+    --cx-ink:#4cc2b6; --ek-ink:#ff7a7a;
     --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
     --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
     --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
@@ -164,9 +167,12 @@
   /* 登機證（沿用日本橫濱／泰國查詢系統的橫式登機證）：左主票面、右票根 */
   .passes{display:flex;flex-direction:column;gap:14px}
   .bp{--acc:var(--alps);position:relative;display:grid;grid-template-columns:1fr 210px;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(40,30,24,.06)}
-  .bp.paris{--acc:var(--paris)}
+  .bp{--acc-ink:var(--acc)}
+  .bp.cx{--acc:var(--cx);--acc-ink:var(--cx-ink)} .bp.ek{--acc:var(--ek);--acc-ink:var(--ek-ink)}
+  .air{font-weight:600} .air.cx{color:var(--cx-ink)} .air.ek{color:var(--ek-ink)}
+  .air.cx::before,.air.ek::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:.05em;background:currentColor}
   .bp-main{position:relative;overflow:hidden;min-width:0}
-  .bp-bg{position:absolute;top:58%;left:50%;width:300px;transform:translate(-50%,-50%);opacity:.07;color:var(--acc);pointer-events:none}
+  .bp-bg{position:absolute;top:58%;left:50%;width:300px;transform:translate(-50%,-50%);opacity:.07;color:var(--acc-ink);pointer-events:none}
   .bp-bg svg{display:block;width:100%;height:auto;fill:currentColor}
   .bp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 16px;background:var(--acc);color:var(--surface)}
   .bp-air{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;letter-spacing:.04em}
@@ -179,9 +185,9 @@
   .bp-v,.bp-stub-route,.bp-air,.bp-lab,.bp-k{font-family:var(--num)}
   .bp-zh{font-size:20px;font-weight:700;margin-top:8px;letter-spacing:.06em}
   .bp-en{font-size:12px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
-  .bp-mid{display:flex;align-items:center;min-width:80px;color:var(--acc)}
+  .bp-mid{display:flex;align-items:center;min-width:80px;color:var(--acc-ink)}
   .bp-mid svg{width:24px;height:24px;fill:currentColor;flex-shrink:0;transform:rotate(90deg)}
-  .bp-mid::before,.bp-mid::after{content:"";flex:1;height:2px;margin:0 4px;background:repeating-linear-gradient(90deg,var(--acc) 0 4px,transparent 4px 8px);opacity:.5}
+  .bp-mid::before,.bp-mid::after{content:"";flex:1;height:2px;margin:0 4px;background:repeating-linear-gradient(90deg,var(--acc-ink) 0 4px,transparent 4px 8px);opacity:.5}
   .bp-info{position:relative;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}
   .bp-cell{padding:8px 12px 10px;border-right:1px solid var(--line);min-width:0}
   .bp-cell:last-child{border-right:0}
@@ -192,9 +198,9 @@
   .bp-stub{position:relative;padding:10px 14px;display:flex;flex-direction:column;gap:6px;border-left:1.5px dashed var(--line);background:linear-gradient(180deg,var(--surface-2),var(--surface) 70%)}
   .bp-stub::before,.bp-stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
   .bp-stub::before{top:-8px} .bp-stub::after{bottom:-8px}
-  .bp-stub-lab{font-size:11px;font-weight:700;letter-spacing:.26em;color:var(--acc);text-align:right;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .bp-stub-lab{font-size:11px;font-weight:700;letter-spacing:.26em;color:var(--acc-ink);text-align:right;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .bp-stub-route{font-size:28px;font-weight:800;letter-spacing:.02em;line-height:1}
-  .bp-stub-route span{color:var(--acc);font-size:18px;margin:0 4px}
+  .bp-stub-route span{color:var(--acc-ink);font-size:18px;margin:0 4px}
   .bp-stub-city{font-size:13px;color:var(--muted)}
   .bp-stub-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
   .bp-stub-grid .bp-v{font-size:16px}
@@ -259,16 +265,16 @@
   };
   var CX_BACK = [['CX260','4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],['CX432','4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
   var CARRIERS = {
-    cxE:{ name:'國泰航空・高雄出發', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX383',
+    cxE:{ name:'國泰航空・高雄出發', brand:'cx', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX383',
       out:[['CX459','3/30','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX383','3/31','香港 HKG 00:25 → 蘇黎世 ZRH 07:30']],
       back:CX_BACK, tickets:['group','indiv','prem','biz','eco'] },
-    ek:{ name:'阿聯酋航空・桃園出發', airline:'EMIRATES 阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
+    ek:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'EMIRATES 阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
       out:[['EK367','3/30','桃園 TPE 23:05 → 杜拜 DXB 04:35（3/31）'],['EK087','3/31','杜拜 DXB 08:40 → 蘇黎世 ZRH 13:20']],
       back:[['EK074','4/7','巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）'],[null,'4/8','杜拜 DXB 03:45 → 桃園 TPE 16:10']], tickets:['ek'] },
-    cxM:{ name:'國泰航空・高雄出發', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX261',
+    cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
       back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
-    none:{ name:'自行處理機票', short:'自行處理', tickets:['self'] }
+    none:{ name:'自行處理機票', brand:'', short:'自行處理', tickets:['self'] }
   };
   var TICKETS = {
     group:{ label:'團體票・經濟艙', cls:'t-group' },
@@ -301,6 +307,7 @@
   var ORDER = ['early','main','self'];
 
   // ===== 工具 =====
+  function airTag(c){ return '<span class="air ' + c.brand + '">' + c.short + '</span>'; }
   function carrierOf(ticket){ for (var k in CARRIERS) if (CARRIERS[k].tickets.indexOf(ticket) !== -1) return CARRIERS[k]; }
   function pill(p){
     if (!p[2]) return '';
@@ -324,7 +331,7 @@
     var m = r[2].match(/^(\S+) (\w{3}) (\d\d:\d\d) → (\S+) (\w{3}) (\d\d:\d\d)(?:（(.+)）)?$/);
     var fno = r[0] ? '<div class="bp-v">' + r[0] + '</div>' : '<div class="bp-v none">未填</div>';
     function cell(k, v){ return '<div class="bp-cell"><div class="bp-k">' + k + '</div>' + v + '</div>'; }
-    return '<div class="bp' + (trip === 'main' ? ' paris' : '') + '"><div class="bp-main"><div class="bp-bg">' + BG_PLANE + '</div>' +
+    return '<div class="bp ' + c.brand + '"><div class="bp-main"><div class="bp-bg">' + BG_PLANE + '</div>' +
       '<div class="bp-head"><span class="bp-air">' + PLANE + c.airline + '</span><span class="bp-lab">' + label + '</span></div>' +
       '<div class="bp-route">' +
         '<div class="bp-port"><span class="bp-code">' + m[2] + '</span><span class="bp-zh">' + m[1] + '</span><span class="bp-en">' + (CITY_EN[m[2]] || '') + '</span></div>' +
@@ -426,7 +433,7 @@
     h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>票種</th><th>班次</th><th>狀態</th></tr></thead><tbody>' +
       list.map(function(p, i){
         var tk = TICKETS[p[1]];
-        return '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '" data-n="' + p[0] + '"><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
+        return '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '" data-n="' + p[0] + '"><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + airTag(carrierOf(p[1])) + '</td><td>' + pill(p) + '</td></tr>';
       }).join('') + '</tbody></table></div>';
 
     // 2. 各班次・各名單
@@ -434,7 +441,7 @@
     t.carriers.forEach(function(ck){
       var c = CARRIERS[ck];
       var inC = list.filter(function(p){ return c.tickets.indexOf(p[1]) !== -1; });
-      h += '<section class="carrier"><div class="carrier-h">' + c.name + ' <span class="note">' + inC.length + ' 人</span>' + (c.warn ? '<span class="warn-note">' + c.warn + '</span>' : '') + '</div>';
+      h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span>' + ' <span class="note">' + inC.length + ' 人</span>' + (c.warn ? '<span class="warn-note">' + c.warn + '</span>' : '') + '</div>';
       if (c.backTitle) h += '<div class="note">' + c.backTitle + '</div>';
       if (c.out) h += passes(c, inC.length, k);
       c.tickets.forEach(function(tkKey){
@@ -466,7 +473,7 @@
     ORDER.forEach(function(k){
       PEOPLE[k].forEach(function(p){
         var tk = TICKETS[p[1]];
-        h += '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
+        h += '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + airTag(carrierOf(p[1])) + '</td><td>' + pill(p) + '</td></tr>';
       });
     });
     h += '</tbody></table></div><a class="back" href="#">‹ 回到選團</a>';
