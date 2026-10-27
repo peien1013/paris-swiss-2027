@@ -113,25 +113,54 @@
   .flights{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .fl{background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:16px;min-width:0}
   .fl h3{margin:0 0 4px;font-size:15px;color:var(--muted);letter-spacing:.06em}
-  /* 機票：左出發、右抵達，中間航班號＋日期 */
-  .legs{display:flex;flex-direction:column;gap:10px}
-  .tk{position:relative;background:var(--surface);border-radius:14px;padding:12px 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-  .tk::before,.tk::after{content:"";position:absolute;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:var(--surface-2)}
-  .tk::before{left:-8px} .tk::after{right:-8px}
-  .end{display:flex;flex-direction:column;min-width:0}
-  .end.r{text-align:right;align-items:flex-end}
-  .iata{font-size:40px;font-weight:800;letter-spacing:.04em;line-height:1.05;font-variant-numeric:tabular-nums}
-  .city{font-size:20px;font-weight:700}
-  .time{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
-  .plus{font-size:13px;color:var(--warn);font-weight:700}
-  .mid{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:96px;color:var(--muted);font-size:15px}
-  .fno{font-size:18px;font-weight:800;color:var(--fg);letter-spacing:.03em}
-  .fno.none{font-size:14px;font-weight:400;color:var(--muted)}
-  .path{display:flex;align-items:center;gap:4px;width:100%;color:var(--muted)}
-  .path::before,.path::after{content:"";flex:1;border-top:2px dashed var(--line)}
-  .path svg{width:20px;height:20px;fill:currentColor}
-  .day{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
-  @media (max-width:420px){ .iata{font-size:32px} .tk{padding:10px 14px} .mid{min-width:76px} }
+  /* 登機證（沿用日本橫濱／泰國查詢系統的橫式登機證）：左主票面、右票根 */
+  .passes{display:flex;flex-direction:column;gap:14px}
+  .bp{--acc:var(--alps);position:relative;display:grid;grid-template-columns:1fr 210px;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(40,30,24,.06)}
+  .bp.paris{--acc:var(--paris)}
+  .bp-main{position:relative;overflow:hidden;min-width:0}
+  .bp-bg{position:absolute;top:58%;left:50%;width:300px;transform:translate(-50%,-50%);opacity:.07;color:var(--acc);pointer-events:none}
+  .bp-bg svg{display:block;width:100%;height:auto;fill:currentColor}
+  .bp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 16px;background:var(--acc);color:var(--surface)}
+  .bp-air{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;letter-spacing:.04em}
+  .bp-air svg{width:15px;height:15px;fill:currentColor}
+  .bp-lab{font-size:12px;font-weight:700;letter-spacing:.2em}
+  .bp-route{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:18px 20px 14px}
+  .bp-port{display:flex;flex-direction:column;min-width:0}
+  .bp-port.r{align-items:flex-end;text-align:right}
+  .bp-code{font-size:50px;font-weight:800;letter-spacing:.03em;line-height:1}
+  .bp-zh{font-size:20px;font-weight:700;margin-top:8px;letter-spacing:.06em}
+  .bp-en{font-size:12px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+  .bp-mid{display:flex;align-items:center;min-width:80px;color:var(--acc)}
+  .bp-mid svg{width:24px;height:24px;fill:currentColor;flex-shrink:0;transform:rotate(90deg)}
+  .bp-mid::before,.bp-mid::after{content:"";flex:1;height:2px;margin:0 4px;background:repeating-linear-gradient(90deg,var(--acc) 0 4px,transparent 4px 8px);opacity:.5}
+  .bp-info{position:relative;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}
+  .bp-cell{padding:8px 12px 10px;border-right:1px solid var(--line);min-width:0}
+  .bp-cell:last-child{border-right:0}
+  .bp-k{font-size:11px;color:var(--muted);letter-spacing:.14em;line-height:1.3;margin-bottom:4px}
+  .bp-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
+  .bp-v.none{font-size:15px;font-weight:400;color:var(--muted)}
+  .bp-v small{display:block;font-size:12px;color:var(--warn);font-weight:700}
+  .bp-stub{position:relative;padding:10px 14px;display:flex;flex-direction:column;gap:6px;border-left:1.5px dashed var(--line);background:linear-gradient(180deg,var(--surface-2),var(--surface) 70%)}
+  .bp-stub::before,.bp-stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+  .bp-stub::before{top:-8px} .bp-stub::after{bottom:-8px}
+  .bp-stub-lab{font-size:11px;font-weight:700;letter-spacing:.26em;color:var(--acc);text-align:right;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .bp-stub-route{font-size:28px;font-weight:800;letter-spacing:.02em;line-height:1}
+  .bp-stub-route span{color:var(--acc);font-size:18px;margin:0 4px}
+  .bp-stub-city{font-size:13px;color:var(--muted)}
+  .bp-stub-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .bp-stub-grid .bp-v{font-size:16px}
+  .bp-bar{margin-top:auto;opacity:.75}
+  .bp-bar svg{display:block;width:100%;height:24px;fill:var(--fg)}
+  @media (max-width:760px){
+    .bp{grid-template-columns:1fr}
+    .bp-stub{display:none}
+    .bp-code{font-size:44px}
+    .bp-route{padding:18px 16px 14px}
+    .bp-info{grid-template-columns:1fr 1fr}
+    .bp-cell{border-bottom:1px solid var(--line)}
+    .bp-cell:nth-child(2n){border-right:0}
+    .bp-cell:nth-child(5){grid-column:1 / -1;border-bottom:0}
+  }
 
   .tix{background:var(--cs);border:1.5px solid var(--c);border-radius:12px;padding:12px 16px}
   .tix .n{background:var(--surface)}
@@ -180,15 +209,15 @@
   };
   var CX_BACK = [[null,'4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],[null,'4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
   var CARRIERS = {
-    cxE:{ name:'國泰航空・高雄出發', short:'國泰 CX459→CX383',
+    cxE:{ name:'國泰航空・高雄出發', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX383',
       out:[['CX459','3/30','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX383','3/31','香港 HKG 00:25 → 蘇黎世 ZRH 07:30']],
       back:CX_BACK, tickets:['group','indiv','prem','biz','eco'] },
-    ek:{ name:'阿聯酋航空・桃園出發', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
+    ek:{ name:'阿聯酋航空・桃園出發', airline:'EMIRATES 阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
       out:[['EK367','3/30','桃園 TPE 23:05 → 杜拜 DXB 04:35（3/31）'],['EK087','3/31','杜拜 DXB 08:40 → 蘇黎世 ZRH 13:20']],
       back:[['EK074','4/7','巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）'],[null,'4/8','杜拜 DXB 03:45 → 桃園 TPE 16:10']], tickets:['ek'] },
-    cxM:{ name:'國泰航空・高雄出發', short:'國泰 CX459→CX261',
+    cxM:{ name:'國泰航空・高雄出發', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
-      back:CX_BACK, backTitle:'回程（和特早鳥同班）', tickets:['paris'] },
+      back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
     none:{ name:'自行處理機票', short:'自行處理', tickets:['self'] }
   };
   var TICKETS = {
@@ -228,18 +257,40 @@
     var cls = p[3] ? 'bad' : (/已/.test(p[2]) ? 'ok' : 'plain');
     return '<span class="pill ' + cls + '">' + p[2] + '</span>';
   }
-  var PLANE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" transform="rotate(90 12 12)"/></svg>';
-  // 每段航班字串格式：「高雄 KHH 19:10 → 香港 HKG 20:50（隔日日期）」
-  function legs(rows){
-    return '<div class="legs">' + rows.map(function(r){
-      var m = r[2].match(/^(\S+) (\w{3}) (\d\d:\d\d) → (\S+) (\w{3}) (\d\d:\d\d)(?:（(.+)）)?$/);
-      if (!m) return '<div class="tk">' + r[1] + '　' + r[2] + '</div>';
-      return '<div class="tk">' +
-        '<div class="end"><span class="iata">' + m[2] + '</span><span class="city">' + m[1] + '</span><span class="time">' + m[3] + '</span></div>' +
-        '<div class="mid"><span class="fno' + (r[0] ? '' : ' none') + '">' + (r[0] || '航班號未填') + '</span><span class="path">' + PLANE + '</span><span class="day">' + r[1] + '</span></div>' +
-        '<div class="end r"><span class="iata">' + m[5] + '</span><span class="city">' + m[4] + '</span><span class="time">' + m[6] + '</span>' + (m[7] ? '<span class="plus">抵達 ' + m[7] + '</span>' : '') + '</div>' +
-        '</div>';
-    }).join('') + '</div>';
+  var PLANE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>';
+  var BG_PLANE = '<svg viewBox="0 0 200 80" aria-hidden="true"><path d="M188 40c0-2-3-3-6-3l-30 1-38-26c-2-1-5-1-7 0l-5 3 22 23-29 1-12-9c-1-1-3-1-4 0l-4 2 9 11-21 1c-2 0-3 1-3 3 0 2 1 3 3 3l21 1-9 11 4 2c1 1 3 1 4 0l12-9 29 1-22 23 5 3c2 1 5 1 7 0l38-26 30 1c3 0 6-1 6-3z"/></svg>';
+  var BAR = (function(){ var w = [2,1,3,1,2.5,1,4,1,2,3,1,2,1,3,2,1,4,1,2.5,1,3,2,1,2,3,1,4,1,2,3,1,2.5,1,3,1,2,4,1,3], x = 0, s = '';
+    w.forEach(function(v, i){ if (i % 2 === 0) s += '<rect x="' + x + '" y="0" width="' + v + '" height="24"/>'; x += v + 1.2; });
+    return '<svg viewBox="0 0 ' + x + ' 24" preserveAspectRatio="none" aria-hidden="true">' + s + '</svg>'; })();
+  var CITY_EN = { KHH:'Kaohsiung', HKG:'Hong Kong', ZRH:'Zürich', CDG:'Paris', TPE:'Taipei', DXB:'Dubai' };
+  // 航班字串格式：「高雄 KHH 19:10 → 香港 HKG 20:50（抵達日期）」→ 一張登機證
+  function pass(r, c, label, people, trip){
+    var m = r[2].match(/^(\S+) (\w{3}) (\d\d:\d\d) → (\S+) (\w{3}) (\d\d:\d\d)(?:（(.+)）)?$/);
+    var fno = r[0] ? '<div class="bp-v">' + r[0] + '</div>' : '<div class="bp-v none">未填</div>';
+    function cell(k, v){ return '<div class="bp-cell"><div class="bp-k">' + k + '</div>' + v + '</div>'; }
+    return '<div class="bp' + (trip === 'main' ? ' paris' : '') + '"><div class="bp-main"><div class="bp-bg">' + BG_PLANE + '</div>' +
+      '<div class="bp-head"><span class="bp-air">' + PLANE + c.airline + '</span><span class="bp-lab">' + label + '</span></div>' +
+      '<div class="bp-route">' +
+        '<div class="bp-port"><span class="bp-code">' + m[2] + '</span><span class="bp-zh">' + m[1] + '</span><span class="bp-en">' + (CITY_EN[m[2]] || '') + '</span></div>' +
+        '<div class="bp-mid">' + PLANE + '</div>' +
+        '<div class="bp-port r"><span class="bp-code">' + m[5] + '</span><span class="bp-zh">' + m[4] + '</span><span class="bp-en">' + (CITY_EN[m[5]] || '') + '</span></div>' +
+      '</div><div class="bp-info">' +
+        cell('FLIGHT<br>航班', fno) +
+        cell('DEPART<br>起飛', '<div class="bp-v">' + m[3] + '</div>') +
+        cell('ARRIVE<br>抵達', '<div class="bp-v">' + m[6] + (m[7] ? '<small>' + m[7] + ' 抵達</small>' : '') + '</div>') +
+        cell('DATE<br>日期', '<div class="bp-v">' + r[1] + '</div>') +
+        cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') +
+      '</div></div>' +
+      '<div class="bp-stub"><div class="bp-stub-lab">BOARDING PASS</div>' +
+        '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + m[1] + ' → ' + m[4] + '</div>' +
+        '<div class="bp-stub-grid"><div><div class="bp-k">FLIGHT</div>' + fno + '</div><div><div class="bp-k">DATE</div><div class="bp-v">' + r[1] + '</div></div></div>' +
+        '<div class="bp-bar">' + BAR + '</div></div></div>';
+  }
+  function passes(c, people, trip){
+    var h = '<div class="passes">';
+    c.out.forEach(function(r, i){ h += pass(r, c, 'DEPARTURE · 去程' + (c.out.length > 1 ? ' ' + (i+1) + '/' + c.out.length : ''), people, trip); });
+    c.back.forEach(function(r, i){ h += pass(r, c, 'RETURN · 回程' + (c.back.length > 1 ? ' ' + (i+1) + '/' + c.back.length : ''), people, trip); });
+    return h + '</div>';
   }
   // 底色圖例：列出這份名單有的票種與人數
   function legend(list){
@@ -308,7 +359,8 @@
       var c = CARRIERS[ck];
       var inC = list.filter(function(p){ return c.tickets.indexOf(p[1]) !== -1; });
       h += '<section class="carrier"><div class="carrier-h">' + c.name + ' <span class="note">' + inC.length + ' 人</span>' + (c.warn ? '<span class="warn-note">' + c.warn + '</span>' : '') + '</div>';
-      if (c.out) h += '<div class="flights"><div class="fl"><h3>去程</h3>' + legs(c.out) + '</div><div class="fl"><h3>' + (c.backTitle || '回程') + '</h3>' + legs(c.back) + '</div></div>';
+      if (c.backTitle) h += '<div class="note">' + c.backTitle + '</div>';
+      if (c.out) h += passes(c, inC.length, k);
       c.tickets.forEach(function(tkKey){
         var ppl = list.filter(function(p){ return p[1] === tkKey; });
         if (!ppl.length) return;
