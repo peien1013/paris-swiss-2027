@@ -242,6 +242,28 @@
     .route{flex-direction:column}
     .stop:not(:last-child)::after{content:""}
   }
+  /* 不斷字：姓名、標籤、航空公司各自整塊，只在塊與塊之間換行 */
+  .nn,.nw,.pill,.chip,.ptrip,.pname,.legend span,.carrier-h>*,.bp-air,.bp-lab,.bp-zh,.trip-head h1 span,.todo b,.search label,.stop b,.pick .nm,.pick .sb{white-space:nowrap}
+  .n{flex-wrap:wrap;row-gap:4px}
+  @media (max-width:520px){
+    .bp-head .en{display:none}
+    .bp-head{padding:7px 12px}
+    .bp-code{font-size:36px}
+    .bp-zh{font-size:17px;margin-top:6px}
+    .bp-mid{min-width:40px}
+    .bp-route{padding:14px 12px 12px;gap:6px}
+    .bp-cell{padding:7px 10px 8px}
+    .bp-v{font-size:18px}
+    .carrier,.search-box{padding:14px}
+    .tix{padding:10px}
+    .names{gap:6px}
+    .n{font-size:19px;padding:6px 10px}
+    .en-title{letter-spacing:.14em;font-size:11px}
+    .trip-head{padding:18px}
+    .trip-head h1{font-size:23px}
+    .pick .dt{font-size:14px}
+    .todo{padding:16px 18px}
+  }
   @media (prefers-reduced-motion:reduce){ .pick{transition:none} }
 </style>
 </head>
@@ -260,18 +282,18 @@
     main:{ name:'大團', sub:'直飛巴黎', dates:'3/31 出發・4/1 抵巴黎・4/8 回台', mine:true, cls:'paris',
       route:[['3/31','出發'],['4/1','抵巴黎'],['4/2～4/7','公司行程'],['4/7～4/8','回程']],
       carriers:['cxM'] },
-    self:{ name:'早鳥', sub:'自行處理機票', dates:'表上註記：自行處理機票／不參加行程', mine:false, cls:'self',
+    self:{ name:'早鳥', sub:'自行處理機票', dates:'自行處理機票・不參加行程', mine:false, cls:'self',
       route:null, carriers:['none'] }
   };
   var CX_BACK = [['CX260','4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],['CX432','4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
   var CARRIERS = {
-    cxE:{ name:'國泰航空・高雄出發', brand:'cx', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX383',
+    cxE:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX383',
       out:[['CX459','3/30','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX383','3/31','香港 HKG 00:25 → 蘇黎世 ZRH 07:30']],
       back:CX_BACK, tickets:['group','indiv','prem','biz','eco'] },
-    ek:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'EMIRATES 阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
+    ek:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'<span class="en">EMIRATES </span>阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
       out:[['EK367','3/30','桃園 TPE 23:05 → 杜拜 DXB 04:35（3/31）'],['EK087','3/31','杜拜 DXB 08:40 → 蘇黎世 ZRH 13:20']],
       back:[['EK074','4/7','巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）'],[null,'4/8','杜拜 DXB 03:45 → 桃園 TPE 16:10']], tickets:['ek'] },
-    cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX261',
+    cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
       back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
     none:{ name:'自行處理機票', brand:'', short:'自行處理', tickets:['self'] }
@@ -307,6 +329,8 @@
   var ORDER = ['early','main','self'];
 
   // ===== 工具 =====
+  // 「・」分段，每段不斷行（手機只在「・」之間換行）
+  function nw(s){ return s.split('・').map(function(x){ return '<span class="nw">' + x + '</span>'; }).join('・'); }
   function airTag(c){ return '<span class="air ' + c.brand + '">' + c.short + '</span>'; }
   function carrierOf(ticket){ for (var k in CARRIERS) if (CARRIERS[k].tickets.indexOf(ticket) !== -1) return CARRIERS[k]; }
   function pill(p){
@@ -351,8 +375,8 @@
   }
   function passes(c, people, trip){
     var h = '<div class="passes">';
-    c.out.forEach(function(r, i){ h += pass(r, c, 'DEPARTURE · 去程' + (c.out.length > 1 ? ' ' + (i+1) + '/' + c.out.length : ''), people, trip); });
-    c.back.forEach(function(r, i){ h += pass(r, c, 'RETURN · 回程' + (c.back.length > 1 ? ' ' + (i+1) + '/' + c.back.length : ''), people, trip); });
+    c.out.forEach(function(r, i){ h += pass(r, c, '<span class="en">DEPARTURE · </span>去程' + (c.out.length > 1 ? ' ' + (i+1) + '/' + c.out.length : ''), people, trip); });
+    c.back.forEach(function(r, i){ h += pass(r, c, '<span class="en">RETURN · </span>回程' + (c.back.length > 1 ? ' ' + (i+1) + '/' + c.back.length : ''), people, trip); });
     return h + '</div>';
   }
   // 底色圖例：列出這份名單有的票種與人數
@@ -378,7 +402,7 @@
       return '<a class="pick ' + t.cls + '" href="#' + k + '">' +
         '<span class="pick-top">' + ICON[k] + '<span><span class="nm">' + t.name + '</span><span class="sb">' + t.sub + '</span></span>' +
         '<span class="ct">' + PEOPLE[k].length + '<small>人</small></span></span>' +
-        '<span class="pick-bot"><span class="dt">' + t.dates + '</span><span class="go">看名單 ›</span></span></a>';
+        '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
     }).join('') + '</div>';
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
     h += '<section class="todo"><h2>還沒搞定（4 件）</h2><ul>' +
@@ -423,7 +447,7 @@
   function renderTrip(k, focus){
     var t = TRIPS[k], list = PEOPLE[k];
     var h = '<a class="back" href="#">‹ 回到選團</a>';
-    h += '<div class="trip-head ' + k + '"><div><h1>' + t.name + '｜' + t.sub + '</h1><p>' + t.dates + '</p></div><span class="count">' + list.length + ' 人</span>';
+    h += '<div class="trip-head ' + k + '"><div><h1><span>' + t.name + '｜</span><span>' + t.sub + '</span></h1><p>' + nw(t.dates) + '</p></div><span class="count">' + list.length + ' 人</span>';
     if (t.route) h += '<div class="route">' + t.route.map(function(r){ return '<div class="stop"><div><b>' + r[0] + '</b>' + r[1] + (r[2] ? '<span>' + r[2] + '</span>' : '') + '</div></div>'; }).join('') + '</div>';
     h += '</div>';
 
@@ -450,7 +474,7 @@
         var tk = TICKETS[tkKey];
         h += '<div class="tix ' + tk.cls + '"><div class="tix-h"><span class="chip">' + tk.label + '</span><span class="count">' + ppl.length + ' 人</span>' +
           (tk.note ? '<span class="note">' + tk.note + '</span>' : '') + (tk.warn ? '<span class="warn-note">' + tk.warn + '</span>' : '') + '</div>' +
-          '<div class="names">' + ppl.map(function(p){ return '<div class="n' + (p[3] ? ' flag' : '') + '" data-n="' + p[0] + '">' + p[0] + (p[3] ? pill(p) : '') + '</div>'; }).join('') + '</div></div>';
+          '<div class="names">' + ppl.map(function(p){ return '<div class="n' + (p[3] ? ' flag' : '') + '" data-n="' + p[0] + '"><span class="nn">' + p[0] + '</span>' + (p[3] ? pill(p) : '') + '</div>'; }).join('') + '</div></div>';
       });
       h += '</section>';
     });
