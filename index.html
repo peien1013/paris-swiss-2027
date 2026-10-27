@@ -14,6 +14,7 @@
     --alps:#245d8a; --alps-soft:#e6eff7; --paris:#8e2f47; --paris-soft:#f7e9ed; --self:#6b7280; --self-soft:#eceef1;
     --t-group:#245d8a; --t-indiv:#a8650a; --t-prem:#5b45a6; --t-biz:#16704f; --t-eco:#0b7d8c; --t-ek:#a8302b;
     --ok:#16704f; --ok-soft:#e3f3ec; --warn:#b42318; --warn-soft:#fdecea;
+    --s-group:#e2edf8; --s-indiv:#fdf0d6; --s-prem:#ece7fa; --s-biz:#dff3e8; --s-eco:#dcf3f5; --s-ek:#fde6dc; --s-paris:#f8e5ec; --s-self:#eceef1;
     --display:"Noto Serif TC","PMingLiU",serif;
     --body:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;
   }
@@ -21,12 +22,14 @@
     --bg:#14171d; --surface:#1d2129; --surface-2:#232832; --fg:#e8eaee; --muted:#a2a9b6; --line:#333a46;
     --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
     --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
-    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c; color-scheme:dark }}
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
+    --s-group:#1c2c3c; --s-indiv:#382b15; --s-prem:#2a2541; --s-biz:#183226; --s-eco:#15343a; --s-ek:#3b2419; --s-paris:#3a2229; --s-self:#2a2e36; color-scheme:dark }}
   :root[data-theme="dark"]{
     --bg:#14171d; --surface:#1d2129; --surface-2:#232832; --fg:#e8eaee; --muted:#a2a9b6; --line:#333a46;
     --alps:#79b2df; --alps-soft:#1d2d3c; --paris:#e48aa1; --paris-soft:#3a2229; --self:#a8aeb8; --self-soft:#2a2e36;
     --t-group:#79b2df; --t-indiv:#e5a64a; --t-prem:#a996ee; --t-biz:#5cc79c; --t-eco:#5ccbd9; --t-ek:#ef8780;
-    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c; color-scheme:dark }
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
+    --s-group:#1c2c3c; --s-indiv:#382b15; --s-prem:#2a2541; --s-biz:#183226; --s-eco:#15343a; --s-ek:#3b2419; --s-paris:#3a2229; --s-self:#2a2e36; color-scheme:dark }
 
   *{box-sizing:border-box}
   body{background:var(--bg);color:var(--fg);font:18px/1.6 var(--body)}
@@ -98,7 +101,12 @@
   .pill.ok{color:var(--ok);background:var(--ok-soft)}
   .pill.bad{color:var(--warn);background:var(--warn-soft);font-weight:700}
   .pill.plain{color:var(--muted)}
-  tr.flag td{background:var(--warn-soft)}
+  tbody tr td{background:var(--cs, transparent)}
+  tr.flag td:first-child{box-shadow:inset 5px 0 0 var(--warn)}
+  tr.flag td.nm{color:var(--warn)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px}
+  .legend span{background:var(--cs);color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:2px 12px;font-size:16px;font-weight:700}
+  .legend span small{font-weight:400;color:var(--fg);margin-left:4px}
 
   .carrier{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
   .carrier-h{font-weight:700;font-size:20px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
@@ -109,13 +117,16 @@
   .leg code{font-family:inherit;font-weight:700}
   .leg code.none{color:var(--muted);font-weight:400}
 
-  .tix{border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .tix{background:var(--cs);border:1.5px solid var(--c);border-radius:12px;padding:12px 16px}
+  .tix .n{background:var(--surface)}
   .tix-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
   .chip{font-size:16px;font-weight:700;color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:0 10px;white-space:nowrap}
   .count{font-weight:700;font-variant-numeric:tabular-nums}
   .note{color:var(--muted);font-size:15px}
   .warn-note{color:var(--warn);font-size:15px;font-weight:700}
-  .t-group{--c:var(--t-group)} .t-indiv{--c:var(--t-indiv)} .t-prem{--c:var(--t-prem)} .t-biz{--c:var(--t-biz)} .t-eco{--c:var(--t-eco)} .t-ek{--c:var(--t-ek)} .t-paris{--c:var(--paris)} .t-self{--c:var(--self)}
+  .t-group{--c:var(--t-group);--cs:var(--s-group)} .t-indiv{--c:var(--t-indiv);--cs:var(--s-indiv)} .t-prem{--c:var(--t-prem);--cs:var(--s-prem)}
+  .t-biz{--c:var(--t-biz);--cs:var(--s-biz)} .t-eco{--c:var(--t-eco);--cs:var(--s-eco)} .t-ek{--c:var(--t-ek);--cs:var(--s-ek)}
+  .t-paris{--c:var(--paris);--cs:var(--s-paris)} .t-self{--c:var(--self);--cs:var(--s-self)}
   .names{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   .n{background:var(--surface-2);border-radius:8px;padding:6px 12px;font-size:20px;display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
   .n.flag{box-shadow:inset 0 0 0 1.5px var(--warn)}
@@ -206,6 +217,12 @@
       return '<div class="leg"><code class="' + (r[0] ? '' : 'none') + '">' + (r[0] || '未填') + '</code><span>' + r[1] + '　' + r[2] + '</span></div>';
     }).join('');
   }
+  // 底色圖例：列出這份名單有的票種與人數
+  function legend(list){
+    var seen = [], cnt = {};
+    list.forEach(function(p){ if (!cnt[p[1]]){ cnt[p[1]] = 0; seen.push(p[1]); } cnt[p[1]]++; });
+    return '<div class="legend">' + seen.map(function(k){ return '<span class="' + TICKETS[k].cls + '">' + TICKETS[k].label + '<small>' + cnt[k] + ' 人</small></span>'; }).join('') + '</div>';
+  }
   function tag(t){ return t.mine ? '<span class="tag mine">我負責</span>' : '<span class="tag ref">僅供參考</span>'; }
   var app = document.getElementById('app');
   var total = ORDER.reduce(function(s,k){ return s + PEOPLE[k].length; }, 0);
@@ -254,11 +271,11 @@
 
     // 1. 總名單
     var bad = list.filter(function(p){ return p[3]; }).length;
-    h += '<div class="step-h"><h2>總名單</h2><span class="note">' + list.length + ' 人' + (bad ? '，<span class="warn-note">' + bad + ' 人待處理</span>' : '') + '</span></div>';
+    h += '<div class="step-h"><h2>總名單</h2><span class="note">' + list.length + ' 人' + (bad ? '，<span class="warn-note">' + bad + ' 人待處理</span>' : '') + '</span></div>' + legend(list);
     h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>票種</th><th>班次</th><th>狀態</th></tr></thead><tbody>' +
       list.map(function(p, i){
         var tk = TICKETS[p[1]];
-        return '<tr' + (p[3] ? ' class="flag"' : '') + ' data-n="' + p[0] + '"><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
+        return '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '" data-n="' + p[0] + '"><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
       }).join('') + '</tbody></table></div>';
 
     // 2. 各班次・各名單
@@ -291,12 +308,13 @@
   function renderAll(){
     var h = '<a class="back" href="#">‹ 回到選團</a>';
     h += '<div class="trip-head all"><div><h1>全部總名單</h1><p>' + ORDER.map(function(k){ return TRIPS[k].name + ' ' + PEOPLE[k].length; }).join('・') + '，共 ' + total + ' 人</p></div></div>';
+    h += legend(ORDER.reduce(function(a,k){ return a.concat(PEOPLE[k]); }, []));
     h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>團別</th><th>票種</th><th>班次</th><th>狀態</th></tr></thead><tbody>';
     var i = 0;
     ORDER.forEach(function(k){
       PEOPLE[k].forEach(function(p){
         var tk = TICKETS[p[1]];
-        h += '<tr' + (p[3] ? ' class="flag"' : '') + '><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
+        h += '<tr class="' + tk.cls + (p[3] ? ' flag' : '') + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + carrierOf(p[1]).short + '</td><td>' + pill(p) + '</td></tr>';
       });
     });
     h += '</tbody></table></div><a class="back" href="#">‹ 回到選團</a>';
