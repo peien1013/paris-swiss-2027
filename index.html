@@ -248,7 +248,7 @@
   function renderTrip(k, focus){
     var t = TRIPS[k], list = PEOPLE[k];
     var h = '<a class="back" href="#">‹ 回到選團</a>';
-    h += '<div class="trip-head ' + k + '"><div><h1>' + t.name + '｜' + t.sub + '</h1><p>' + t.dates + '</p></div>' + tag(t) + ' <span class="count">' + list.length + ' 人</span>';
+    h += '<div class="trip-head ' + k + '"><div><h1>' + t.name + '｜' + t.sub + '</h1><p>' + t.dates + '</p></div><div style="display:flex;gap:10px;align-items:center">' + tag(t) + '<span class="count">' + list.length + ' 人</span></div>';
     if (t.route) h += '<div class="route">' + t.route.map(function(r){ return '<div class="stop"><div><b>' + r[0] + '</b>' + r[1] + (r[2] ? '<span>' + r[2] + '</span>' : '') + '</div></div>'; }).join('') + '</div>';
     h += '</div>';
 
