@@ -65,17 +65,10 @@
   .main-title .a{font-weight:500;color:var(--alps)} .main-title .p{font-weight:500;color:var(--paris)} .main-title .dot{color:var(--gold)}
   .en-title{font-family:var(--num);font-size:12px;font-weight:600;letter-spacing:.32em;color:var(--muted)}
   .trip-date{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:6px 18px;border-radius:999px;background:var(--surface);border:1px solid var(--gold);font-family:var(--num);font-size:15px;font-weight:700;letter-spacing:.06em;color:var(--gold-deep)}
-  .skyline{display:block;width:100%;max-width:620px;margin:20px auto 0;overflow:visible}
-  .skyline .m{stroke:var(--alps);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-  .skyline .m2{stroke:var(--alps);fill:none;stroke-width:1.2;opacity:.45;stroke-linecap:round;stroke-linejoin:round}
-  .skyline .t{stroke:var(--paris);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-  .skyline .w{stroke:var(--gold);fill:none;stroke-width:1.2;opacity:.6;stroke-linecap:round}
-  .skyline .glow{fill:var(--gold);opacity:.16}
-  .skyline .pl{fill:var(--gold-deep)}
-  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,-4px)}}
-  @keyframes glowPulse{0%,100%{opacity:.12}50%{opacity:.26}}
-  .skyline #plane{animation:drift 6s ease-in-out infinite}
-  .skyline .glow{animation:glowPulse 5s ease-in-out infinite}
+  /* 主視覺插畫（GPT 水彩圖）：四邊淡出融進背景 */
+  .hero-img{display:block;width:100%;max-width:1080px;height:auto;aspect-ratio:3 / 1;margin:18px auto 0;
+    -webkit-mask-image:radial-gradient(ellipse 74% 80% at 50% 50%,#000 70%,transparent 100%);
+    mask-image:radial-gradient(ellipse 74% 80% at 50% 50%,#000 70%,transparent 100%)}
 
   /* 首頁：選團 */
   .picker{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -243,7 +236,7 @@
     .route{flex-direction:column}
     .stop:not(:last-child)::after{content:""}
   }
-  @media (prefers-reduced-motion:reduce){ .pick{transition:none} .skyline #plane,.skyline .glow{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .pick{transition:none} }
 </style>
 </head>
 <body>
@@ -319,20 +312,6 @@
   var BAR = (function(){ var w = [2,1,3,1,2.5,1,4,1,2,3,1,2,1,3,2,1,4,1,2.5,1,3,2,1,2,3,1,4,1,2,3,1,2.5,1,3,1,2,4,1,3], x = 0, s = '';
     w.forEach(function(v, i){ if (i % 2 === 0) s += '<rect x="' + x + '" y="0" width="' + v + '" height="24"/>'; x += v + 1.2; });
     return '<svg viewBox="0 0 ' + x + ' 24" preserveAspectRatio="none" aria-hidden="true">' + s + '</svg>'; })();
-  // 主視覺線稿：左阿爾卑斯山（山頂插瑞士旗）、右艾菲爾鐵塔、飛機沿虛線飛
-  var SKYLINE = '<svg class="skyline" viewBox="0 0 640 165" aria-hidden="true">' +
-    '<circle class="glow" cx="330" cy="72" r="42"/>' +
-    '<path class="m2" d="M150 150 L232 96 L262 118 L304 90 L360 150"/>' +
-    '<path class="m" d="M10 150 L70 92 L100 116 L160 44 L196 88 L222 70 L300 150"/>' +
-    '<path class="m" d="M144 64 L160 44 L176 64 M60 102 L70 92 L80 102"/>' +
-    '<path class="m" d="M222 70 V44"/><rect x="222" y="44" width="18" height="13" rx="1.5" fill="#d52b1e"/><path d="M231 47.5 V53.5 M228 50.5 H234" stroke="#fff" stroke-width="2"/>' +
-    '<path class="t" d="M472 150 Q489 112 495 70 L501 16 L507 70 Q513 112 530 150"/>' +
-    '<path class="t" d="M482 120 L520 120 M489 94 L513 94 M495 70 L507 70 M501 16 V4"/>' +
-    '<path class="t" d="M486 150 Q501 128 516 150"/>' +
-    '<path class="w" d="M0 150 H640 M40 159 Q60 155 80 159 T120 159 M420 159 Q440 155 460 159 T500 159"/>' +
-    '<path class="w" stroke-dasharray="4 7" d="M300 52 Q430 8 556 40"/>' +
-    '<g id="plane"><g transform="translate(560 30) rotate(75) scale(1.05)"><path class="pl" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></g></g>' +
-    '</svg>';
   // 三團卡右下角的浮水印圖示
   var ICON = {
     early:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M4 76 L34 30 L50 52 L72 14 L98 56 L116 76 M64 26 L72 14 L80 26"/></svg>',
@@ -383,7 +362,8 @@
     var h = '<header class="hero"><span class="event">2027 海外遊</span>' +
       '<h1 class="main-title"><span class="p">巴黎</span><span class="dot">・</span><span class="a">瑞士</span></h1>' +
       '<div class="en-title">PARIS · SWITZERLAND · ' + total + ' TRAVELERS</div>' +
-      '<div class="trip-date">✈ 2027.03.30 — 04.08</div>' + SKYLINE + '</header>';
+      '<div class="trip-date">✈ 2027.03.30 — 04.08</div>' +
+      '<img class="hero-img" src="hero.jpg" alt="阿爾卑斯山湖畔小鎮飛往巴黎艾菲爾鐵塔的水彩插畫" width="1800" height="600"></header>';
     h += '<section class="search-box"><div class="search"><label for="q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>找人</label><input id="q" type="search" placeholder="輸入姓名，例如：王人美" autocomplete="off"></div>' +
       '<p class="hint">輸入姓名，就會顯示他的票種和個人機票時段。</p><div class="results" id="res" aria-live="polite"></div></section>';
     h += '<div class="picker">' + ORDER.map(function(k){
