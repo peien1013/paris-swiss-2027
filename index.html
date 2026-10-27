@@ -281,7 +281,7 @@
       carriers:['cxE','ek'] },
     main:{ name:'大團', sub:'直飛巴黎', dates:'3/31 出發・4/1 抵巴黎・4/8 回台', mine:true, cls:'paris',
       route:[['3/31','出發'],['4/1','抵巴黎'],['4/2～4/7','公司行程'],['4/7～4/8','回程']],
-      carriers:['cxM'] },
+      carriers:['cxM','ekM'] },
     self:{ name:'早鳥', sub:'自行處理機票', dates:'自行處理機票・不參加行程', mine:false, cls:'self',
       route:null, carriers:['none'] }
   };
@@ -296,6 +296,7 @@
     cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
       back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
+    ekM:{ name:'阿聯酋航空', brand:'ek', short:'阿聯酋（班次未定）', pending:'阿聯酋班次還沒出來，確定後再補上登機證。', tickets:['parisek'] },
     none:{ name:'自行處理機票', brand:'', short:'自行處理', tickets:['self'] }
   };
   var TICKETS = {
@@ -305,7 +306,8 @@
     biz:{ label:'商務艙', cls:'t-biz', note:'已購買' },
     eco:{ label:'經濟艙+', cls:'t-eco', warn:'表上沒寫是否已買' },
     ek:{ label:'阿聯酋・桃園出', cls:'t-ek' },
-    paris:{ label:'大團機票', cls:'t-paris' },
+    paris:{ label:'大團・國泰', cls:'t-paris' },
+    parisek:{ label:'大團・阿聯酋', cls:'t-ek', warn:'班次還沒出來' },
     self:{ label:'自行處理', cls:'t-self' }
   };
   // [姓名, 票種, 狀態, 是否待處理]
@@ -322,7 +324,7 @@
     main:[
       ['黃怡潔','paris','已訂機票'],['陳畇臻','paris','已訂機票'],['陳林𪧓鐘','paris','已訂機票'],['張愷芳','paris','已訂機票'],
       ['詹秀鑾','paris','缺護照',1],['王俐涵','paris','已訂機票'],['林偉龍','paris','已訂機票'],
-      ['劉月珠','paris','商務艙未購買',1],['劉姸庭','paris','商務艙未購買',1]
+      ['劉月珠','parisek','商務艙未購買',1],['劉姸庭','parisek','商務艙未購買',1]
     ],
     self:[['吳孟容','self'],['林煒智','self'],['原佩蘭','self'],['劉李腰','self']]
   };
@@ -407,7 +409,7 @@
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
     h += '<section class="todo"><h2>還沒搞定（4 件）</h2><ul>' +
       '<li><b>詹秀鑾</b>（大團）缺護照</li>' +
-      '<li><b>劉月珠、劉姸庭</b>（大團）商務艙還沒買</li>' +
+      '<li><b>劉月珠、劉姸庭</b>（大團・阿聯酋）商務艙還沒買，班次還沒出來</li>' +
       '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li>' +
       '<li>阿聯酋回程 杜拜→桃園的<b>航班號</b>表上沒填</li></ul></section>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
@@ -437,7 +439,7 @@
     function showPerson(f){
       var k = f[0], p = f[1], t = TRIPS[k], tk = TICKETS[p[1]], c = carrierOf(p[1]);
       var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span>' + (p[2] ? pill(p) : '') + '<span class="ptrip">' + t.name + '｜' + t.sub + '</span></div>';
-      h2 += c.out ? passes(c, p[0], k) : '<p class="note">自行處理機票，表上沒有航班資料。</p>';
+      h2 += c.out ? passes(c, p[0], k) : '<p class="note">' + (c.pending || '自行處理機票，表上沒有航班資料。') + '</p>';
       h2 += '<a class="back" href="#' + k + '/' + encodeURIComponent(p[0]) + '">看' + t.name + '完整名單 ›</a></div>';
       res.innerHTML = h2;
     }
@@ -468,6 +470,7 @@
       h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span>' + ' <span class="note">' + inC.length + ' 人</span>' + (c.warn ? '<span class="warn-note">' + c.warn + '</span>' : '') + '</div>';
       if (c.backTitle) h += '<div class="note">' + c.backTitle + '</div>';
       if (c.out) h += passes(c, inC.length, k);
+      else if (c.pending) h += '<p class="warn-note">' + c.pending + '</p>';
       c.tickets.forEach(function(tkKey){
         var ppl = list.filter(function(p){ return p[1] === tkKey; });
         if (!ppl.length) return;
