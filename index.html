@@ -68,6 +68,20 @@
   .search{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   .search label{font-weight:700}
   .search input{flex:1;min-width:0;max-width:340px;font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+  .search-box{background:var(--surface);border:2px solid var(--alps);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+  .search-box .search label{font-size:20px}
+  .search-box .search input{font-size:22px;max-width:420px}
+  .results:empty{display:none}
+  .person{display:flex;flex-direction:column;gap:12px}
+  .person-h{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .pname{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.2}
+  .person-h .chip{font-size:18px;padding:1px 12px;background:var(--cs)}
+  .ptrip{color:var(--muted);font-size:17px}
+  .pick-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .pick-names button{font:inherit;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column}
+  .pick-names button:hover{border-color:var(--alps)}
+  .pick-names b{font-size:20px}
+  .pick-names span{font-size:14px;color:var(--muted)}
   .results{display:flex;flex-direction:column;gap:6px}
   .results a{display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px;text-decoration:none}
   .results a b{font-size:20px}
@@ -279,7 +293,7 @@
         cell('DEPART<br>起飛', '<div class="bp-v">' + m[3] + '</div>') +
         cell('ARRIVE<br>抵達', '<div class="bp-v">' + m[6] + (m[7] ? '<small>' + m[7] + ' 抵達</small>' : '') + '</div>') +
         cell('DATE<br>日期', '<div class="bp-v">' + r[1] + '</div>') +
-        cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') +
+        (typeof people === 'number' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') : cell('PASSENGER<br>乘客', '<div class="bp-v">' + people + '</div>')) +
       '</div></div>' +
       '<div class="bp-stub"><div class="bp-stub-lab">BOARDING PASS</div>' +
         '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + m[1] + ' → ' + m[4] + '</div>' +
@@ -304,7 +318,8 @@
 
   // ===== 首頁：三團選擇 =====
   function renderHome(){
-    var h = '<header><h1>2027 巴黎瑞士之旅</h1><p class="lede">請先選團。共 ' + total + ' 人，我負責特早鳥＋大團；早鳥列出來參考。</p></header>';
+    var h = '<header><h1>2027 巴黎瑞士之旅</h1><p class="lede">輸入姓名查個人機票，或選團看名單。共 ' + total + ' 人，我負責特早鳥＋大團；早鳥列出來參考。</p></header>';
+    h += '<section class="search-box"><div class="search"><label for="q">找人</label><input id="q" type="search" placeholder="輸入姓名，例如：王人美" autocomplete="off"></div><div class="results" id="res" aria-live="polite"></div></section>';
     h += '<div class="picker">' + ORDER.map(function(k){
       var t = TRIPS[k];
       return '<a class="pick ' + t.cls + '" href="#' + k + '">' + tag(t) +
@@ -317,7 +332,6 @@
       '<li><b>劉月珠、劉姸庭</b>（大團）商務艙還沒買</li>' +
       '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li>' +
       '<li>國泰、阿聯酋回程的<b>航班號</b>表上沒填</li></ul></section>';
-    h += '<div class="search"><label for="q">找人</label><input id="q" type="search" placeholder="輸入姓名，例如：王人美" autocomplete="off"></div><div class="results" id="res" aria-live="polite"></div>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
@@ -327,13 +341,28 @@
       var found = [];
       ORDER.forEach(function(k){ PEOPLE[k].forEach(function(p){ if (p[0].indexOf(v) !== -1) found.push([k,p]); }); });
       if (!found.length){ var none = document.createElement('p'); none.textContent = '找不到「' + v + '」'; res.appendChild(none); return; }
+      var exact = found.filter(function(f){ return f[1][0] === v; });
+      if (found.length === 1 || exact.length === 1) { showPerson(exact[0] || found[0]); return; }
+      var tip = document.createElement('p'); tip.textContent = '找到 ' + found.length + ' 人，點名字看機票：'; res.appendChild(tip);
+      var list = document.createElement('div'); list.className = 'pick-names';
       found.forEach(function(f){
-        var a = document.createElement('a'); a.href = '#' + f[0] + '/' + encodeURIComponent(f[1][0]);
-        var b = document.createElement('b'); b.textContent = f[1][0];
-        var s = document.createElement('span'); s.textContent = TRIPS[f[0]].name + '・' + TICKETS[f[1][1]].label + (f[1][2] ? '・' + f[1][2] : '');
-        a.appendChild(b); a.appendChild(s); res.appendChild(a);
+        var b = document.createElement('button'); b.type = 'button';
+        var nm = document.createElement('b'); nm.textContent = f[1][0];
+        var s = document.createElement('span'); s.textContent = TRIPS[f[0]].name + '・' + TICKETS[f[1][1]].label;
+        b.appendChild(nm); b.appendChild(s);
+        b.addEventListener('click', function(){ q.value = f[1][0]; showPerson(f); });
+        list.appendChild(b);
       });
+      res.appendChild(list);
     });
+    // 個人卡：姓名、票種、團別、狀態＋自己的登機證（乘客欄是本人）
+    function showPerson(f){
+      var k = f[0], p = f[1], t = TRIPS[k], tk = TICKETS[p[1]], c = carrierOf(p[1]);
+      var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span>' + (p[2] ? pill(p) : '') + '<span class="ptrip">' + t.name + '｜' + t.sub + '</span></div>';
+      h2 += c.out ? passes(c, p[0], k) : '<p class="note">自行處理機票，表上沒有航班資料。</p>';
+      h2 += '<a class="back" href="#' + k + '/' + encodeURIComponent(p[0]) + '">看' + t.name + '完整名單 ›</a></div>';
+      res.innerHTML = h2;
+    }
   }
 
   // ===== 團內頁：總名單 → 各班次 =====
