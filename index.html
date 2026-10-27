@@ -264,7 +264,7 @@
     self:{ name:'早鳥', sub:'自行處理機票', dates:'表上註記：自行處理機票／不參加行程', mine:false, cls:'self',
       route:null, carriers:['none'] }
   };
-  var CX_BACK = [[null,'4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],[null,'4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
+  var CX_BACK = [['CX260','4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],['CX432','4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
   var CARRIERS = {
     cxE:{ name:'國泰航空・高雄出發', airline:'CATHAY PACIFIC 國泰航空', short:'國泰 CX459→CX383',
       out:[['CX459','3/30','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX383','3/31','香港 HKG 00:25 → 蘇黎世 ZRH 07:30']],
@@ -398,7 +398,7 @@
       '<li><b>詹秀鑾</b>（大團）缺護照</li>' +
       '<li><b>劉月珠、劉姸庭</b>（大團）商務艙還沒買</li>' +
       '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li>' +
-      '<li>國泰、阿聯酋回程的<b>航班號</b>表上沒填</li></ul></section>';
+      '<li>阿聯酋回程 杜拜→桃園的<b>航班號</b>表上沒填</li></ul></section>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
