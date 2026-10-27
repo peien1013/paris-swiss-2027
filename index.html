@@ -312,17 +312,16 @@
     list.forEach(function(p){ if (!cnt[p[1]]){ cnt[p[1]] = 0; seen.push(p[1]); } cnt[p[1]]++; });
     return '<div class="legend">' + seen.map(function(k){ return '<span class="' + TICKETS[k].cls + '">' + TICKETS[k].label + '<small>' + cnt[k] + ' 人</small></span>'; }).join('') + '</div>';
   }
-  function tag(t){ return t.mine ? '<span class="tag mine">我負責</span>' : '<span class="tag ref">僅供參考</span>'; }
   var app = document.getElementById('app');
   var total = ORDER.reduce(function(s,k){ return s + PEOPLE[k].length; }, 0);
 
   // ===== 首頁：三團選擇 =====
   function renderHome(){
-    var h = '<header><h1>2027 巴黎瑞士之旅</h1><p class="lede">輸入姓名查個人機票，或選團看名單。共 ' + total + ' 人，我負責特早鳥＋大團；早鳥列出來參考。</p></header>';
+    var h = '<header><h1>2027 巴黎瑞士之旅</h1><p class="lede">輸入姓名查個人機票，或選團看名單。共 ' + total + ' 人。</p></header>';
     h += '<section class="search-box"><div class="search"><label for="q">找人</label><input id="q" type="search" placeholder="輸入姓名，例如：王人美" autocomplete="off"></div><div class="results" id="res" aria-live="polite"></div></section>';
     h += '<div class="picker">' + ORDER.map(function(k){
       var t = TRIPS[k];
-      return '<a class="pick ' + t.cls + '" href="#' + k + '">' + tag(t) +
+      return '<a class="pick ' + t.cls + '" href="#' + k + '">' +
         '<span class="nm">' + t.name + '</span><span class="sb">' + t.sub + '</span><span class="dt">' + t.dates + '</span>' +
         '<span class="ct">' + PEOPLE[k].length + '<small>人</small></span><span class="go">看名單 ›</span></a>';
     }).join('') + '</div>';
@@ -369,7 +368,7 @@
   function renderTrip(k, focus){
     var t = TRIPS[k], list = PEOPLE[k];
     var h = '<a class="back" href="#">‹ 回到選團</a>';
-    h += '<div class="trip-head ' + k + '"><div><h1>' + t.name + '｜' + t.sub + '</h1><p>' + t.dates + '</p></div><div style="display:flex;gap:10px;align-items:center">' + tag(t) + '<span class="count">' + list.length + ' 人</span></div>';
+    h += '<div class="trip-head ' + k + '"><div><h1>' + t.name + '｜' + t.sub + '</h1><p>' + t.dates + '</p></div><span class="count">' + list.length + ' 人</span>';
     if (t.route) h += '<div class="route">' + t.route.map(function(r){ return '<div class="stop"><div><b>' + r[0] + '</b>' + r[1] + (r[2] ? '<span>' + r[2] + '</span>' : '') + '</div></div>'; }).join('') + '</div>';
     h += '</div>';
 
