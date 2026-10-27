@@ -249,7 +249,7 @@
     .bp-head .en{display:none}
     .bp-head{padding:7px 12px}
     .bp-code{font-size:36px}
-    .bp-zh{font-size:17px;margin-top:6px}
+    .bp-zh{font-size:15px;margin-top:6px}
     .bp-mid{min-width:40px}
     .bp-route{padding:14px 12px 12px;gap:6px}
     .bp-cell{padding:7px 10px 8px}
@@ -351,18 +351,21 @@
     main:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M44 78 Q56 50 58 26 L60 4 L62 26 Q64 50 76 78 M50 58 L70 58 M54 40 L66 40 M52 78 Q60 66 68 78"/></svg>',
     self:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M30 30 H90 V74 H30 Z M48 30 V20 H72 V30 M30 50 H90"/></svg>'
   };
+  // 歐洲端機場用全名
+  var AIRPORT_ZH = { ZRH:'瑞士蘇黎世機場', CDG:'巴黎戴高樂機場' };
   var CITY_EN = { KHH:'Kaohsiung', HKG:'Hong Kong', ZRH:'Zürich', CDG:'Paris', TPE:'Taipei', DXB:'Dubai' };
   // 航班字串格式：「高雄 KHH 19:10 → 香港 HKG 20:50（抵達日期）」→ 一張登機證
   function pass(r, c, label, people, trip){
     var m = r[2].match(/^(\S+) (\w{3}) (\d\d:\d\d) → (\S+) (\w{3}) (\d\d:\d\d)(?:（(.+)）)?$/);
+    var fromZh = AIRPORT_ZH[m[2]] || m[1], toZh = AIRPORT_ZH[m[5]] || m[4];
     var fno = r[0] ? '<div class="bp-v">' + r[0] + '</div>' : '<div class="bp-v none">未填</div>';
     function cell(k, v){ return '<div class="bp-cell"><div class="bp-k">' + k + '</div>' + v + '</div>'; }
     return '<div class="bp ' + c.brand + '"><div class="bp-main"><div class="bp-bg">' + BG_PLANE + '</div>' +
       '<div class="bp-head"><span class="bp-air">' + PLANE + c.airline + '</span><span class="bp-lab">' + label + '</span></div>' +
       '<div class="bp-route">' +
-        '<div class="bp-port"><span class="bp-code">' + m[2] + '</span><span class="bp-zh">' + m[1] + '</span><span class="bp-en">' + (CITY_EN[m[2]] || '') + '</span></div>' +
+        '<div class="bp-port"><span class="bp-code">' + m[2] + '</span><span class="bp-zh">' + fromZh + '</span><span class="bp-en">' + (CITY_EN[m[2]] || '') + '</span></div>' +
         '<div class="bp-mid">' + PLANE + '</div>' +
-        '<div class="bp-port r"><span class="bp-code">' + m[5] + '</span><span class="bp-zh">' + m[4] + '</span><span class="bp-en">' + (CITY_EN[m[5]] || '') + '</span></div>' +
+        '<div class="bp-port r"><span class="bp-code">' + m[5] + '</span><span class="bp-zh">' + toZh + '</span><span class="bp-en">' + (CITY_EN[m[5]] || '') + '</span></div>' +
       '</div><div class="bp-info">' +
         cell('FLIGHT<br>航班', fno) +
         cell('DEPART<br>起飛', '<div class="bp-v">' + m[3] + '</div>') +
@@ -371,7 +374,7 @@
         (typeof people === 'number' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') : cell('PASSENGER<br>乘客', '<div class="bp-v">' + people + '</div>')) +
       '</div></div>' +
       '<div class="bp-stub"><div class="bp-stub-lab">BOARDING PASS</div>' +
-        '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + m[1] + ' → ' + m[4] + '</div>' +
+        '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + fromZh + ' → ' + toZh + '</div>' +
         '<div class="bp-stub-grid"><div><div class="bp-k">FLIGHT</div>' + fno + '</div><div><div class="bp-k">DATE</div><div class="bp-v">' + r[1] + '</div></div></div>' +
         '<div class="bp-bar">' + BAR + '</div></div></div>';
   }
