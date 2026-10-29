@@ -288,6 +288,7 @@
     self:{ name:'早鳥', sub:'自行處理機票', dates:'自行處理機票・不參加行程', mine:false, cls:'self',
       route:null, carriers:['none'] }
   };
+  var EK_BACK = [['EK074','4/7','巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）'],['EK366','4/8','杜拜 DXB 03:45 → 桃園 TPE 16:10']];
   var CX_BACK = [['CX260','4/7','巴黎 CDG 12:20 → 香港 HKG 06:15（4/8）'],['CX432','4/8','香港 HKG 08:35 → 高雄 KHH 10:10']];
   var CARRIERS = {
     cxE:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX383',
@@ -295,11 +296,13 @@
       back:CX_BACK, tickets:['group','indiv','prem','biz','eco'] },
     ek:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'<span class="en">EMIRATES </span>阿聯酋航空', short:'阿聯酋 EK367→EK087', warn:'抵蘇黎世 13:20，比國泰晚約 6 小時',
       out:[['EK367','3/30','桃園 TPE 23:05 → 杜拜 DXB 04:35（3/31）'],['EK087','3/31','杜拜 DXB 08:40 → 蘇黎世 ZRH 13:20']],
-      back:[['EK074','4/7','巴黎 CDG 15:35 → 杜拜 DXB 00:20（4/8）'],[null,'4/8','杜拜 DXB 03:45 → 桃園 TPE 16:10']], tickets:['ek'] },
+      back:EK_BACK, tickets:['ek'] },
     cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
       back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
-    ekM:{ name:'阿聯酋航空', brand:'ek', short:'阿聯酋（班次未定）', pending:'阿聯酋班次還沒出來，確定後再補上登機證。', tickets:['parisek'] },
+    ekM:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'<span class="en">EMIRATES </span>阿聯酋航空', short:'阿聯酋 EK387→EK073', warn:'抵巴黎 13:35，比國泰晚約 5 個半小時',
+      out:[['EK387','4/1','桃園 TPE 00:30 → 杜拜 DXB 06:00'],['EK073','4/1','杜拜 DXB 08:20 → 巴黎 CDG 13:35']],
+      back:EK_BACK, backTitle:'回程和特早鳥阿聯酋同班', tickets:['parisek'] },
     none:{ name:'自行處理機票', brand:'', short:'自行處理', tickets:['self'] }
   };
   var TICKETS = {
@@ -310,7 +313,7 @@
     eco:{ label:'經濟艙+', cls:'t-eco', warn:'表上沒寫是否已買' },
     ek:{ label:'阿聯酋・桃園出', cls:'t-ek' },
     paris:{ label:'大團・國泰', cls:'t-paris' },
-    parisek:{ label:'大團・阿聯酋', cls:'t-ek', warn:'班次還沒出來' },
+    parisek:{ label:'大團・阿聯酋', cls:'t-ek' },
     self:{ label:'自行處理', cls:'t-self' }
   };
   // [姓名, 票種, 狀態, 是否待處理]
@@ -327,7 +330,7 @@
     main:[
       ['黃怡潔','paris','已訂機票'],['陳畇臻','paris','已訂機票'],['陳林𪧓鐘','paris','已訂機票'],['張愷芳','paris','已訂機票'],
       ['詹秀鑾','paris','缺護照',1],['王俐涵','paris','已訂機票'],['林偉龍','paris','已訂機票'],
-      ['劉月珠','parisek','商務艙未購買',1],['劉姸庭','parisek','商務艙未購買',1]
+      ['劉月珠','parisek','商務艙未購買',1],['劉姸廷','parisek','商務艙未購買',1]
     ],
     self:[['吳孟容','self'],['林煒智','self'],['原佩蘭','self'],['劉李腰','self']]
   };
@@ -413,11 +416,10 @@
         '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
     }).join('') + '</div>';
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
-    h += '<section class="todo"><h2>還沒搞定（4 件）</h2><ul>' +
+    h += '<section class="todo"><h2>還沒搞定（3 件）</h2><ul>' +
       '<li><b>詹秀鑾</b>（大團）缺護照</li>' +
-      '<li><b>劉月珠、劉姸庭</b>（大團・阿聯酋）商務艙還沒買，班次還沒出來</li>' +
-      '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li>' +
-      '<li>阿聯酋回程 杜拜→桃園的<b>航班號</b>表上沒填</li></ul></section>';
+      '<li><b>劉月珠、劉姸廷</b>（大團・阿聯酋）商務艙還沒買</li>' +
+      '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li></ul></section>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
