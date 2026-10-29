@@ -299,12 +299,18 @@
       back:EK_BACK, tickets:['ek'] },
     cxM:{ name:'國泰航空・高雄出發', brand:'cx', airline:'<span class="en">CATHAY PACIFIC </span>國泰航空', short:'國泰 CX459→CX261',
       out:[['CX459','3/31','高雄 KHH 19:10 → 香港 HKG 20:50'],['CX261','4/1','香港 HKG 00:05 → 巴黎 CDG 07:55']],
-      back:CX_BACK, backTitle:'回程和特早鳥同班', tickets:['paris'] },
+      back:CX_BACK, tickets:['paris'] },
     ekM:{ name:'阿聯酋航空・桃園出發', brand:'ek', airline:'<span class="en">EMIRATES </span>阿聯酋航空', short:'阿聯酋 EK387→EK073', warn:'抵巴黎 13:35，比國泰晚約 5 個半小時',
       out:[['EK387','4/1','桃園 TPE 00:30 → 杜拜 DXB 06:00'],['EK073','4/1','杜拜 DXB 08:20 → 巴黎 CDG 13:35']],
-      back:EK_BACK, backTitle:'回程和特早鳥阿聯酋同班', tickets:['parisek'] },
+      back:EK_BACK, tickets:['parisek'] },
     none:{ name:'自行處理機票', brand:'', short:'自行處理', tickets:['self'] }
   };
+  // 回程：特早鳥和大團搭同一班（國泰一班、阿聯酋一班）
+  var RETURNS = [
+    { name:'國泰航空・回高雄', carriers:['cxE','cxM'] },
+    { name:'阿聯酋航空・回桃園', carriers:['ek','ekM'] }
+  ];
+  var TRIP_CLS = { early:'t-group', main:'t-paris' };
   var TICKETS = {
     group:{ label:'團體票・經濟艙', cls:'t-group' },
     indiv:{ label:'個別票', cls:'t-indiv', note:'10/27 開票' },
@@ -377,17 +383,19 @@
         cell('DEPART<br>起飛', '<div class="bp-v">' + m[3] + '</div>') +
         cell('ARRIVE<br>抵達', '<div class="bp-v">' + m[6] + (m[7] ? '<small>' + m[7] + ' 抵達</small>' : '') + '</div>') +
         cell('DATE<br>日期', '<div class="bp-v">' + r[1] + '</div>') +
-        (typeof people === 'number' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') : cell('PASSENGER<br>乘客', '<div class="bp-v">' + people + '</div>')) +
+        (typeof people === 'object' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people.n + ' 人<small>' + people.sub + '</small></div>') :
+         typeof people === 'number' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') : cell('PASSENGER<br>乘客', '<div class="bp-v">' + people + '</div>')) +
       '</div></div>' +
       '<div class="bp-stub"><div class="bp-stub-lab">BOARDING PASS</div>' +
         '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + fromZh + ' → ' + toZh + '</div>' +
         '<div class="bp-stub-grid"><div><div class="bp-k">FLIGHT</div>' + fno + '</div><div><div class="bp-k">DATE</div><div class="bp-v">' + r[1] + '</div></div></div>' +
         '<div class="bp-bar">' + BAR + '</div></div></div>';
   }
-  function passes(c, people, trip){
+  // which：'out' 只畫去程、'back' 只畫回程、不給就兩段都畫
+  function passes(c, people, trip, which){
     var h = '<div class="passes">';
-    c.out.forEach(function(r, i){ h += pass(r, c, '<span class="en">DEPARTURE · </span>去程' + (c.out.length > 1 ? ' ' + (i+1) + '/' + c.out.length : ''), people, trip); });
-    c.back.forEach(function(r, i){ h += pass(r, c, '<span class="en">RETURN · </span>回程' + (c.back.length > 1 ? ' ' + (i+1) + '/' + c.back.length : ''), people, trip); });
+    if (which !== 'back') c.out.forEach(function(r, i){ h += pass(r, c, '<span class="en">DEPARTURE · </span>去程' + (c.out.length > 1 ? ' ' + (i+1) + '/' + c.out.length : ''), people, trip); });
+    if (which !== 'out') c.back.forEach(function(r, i){ h += pass(r, c, '<span class="en">RETURN · </span>回程' + (c.back.length > 1 ? ' ' + (i+1) + '/' + c.back.length : ''), people, trip); });
     return h + '</div>';
   }
   // 底色圖例：列出這份名單有的票種與人數
@@ -445,7 +453,7 @@
     function showPerson(f){
       var k = f[0], p = f[1], t = TRIPS[k], tk = TICKETS[p[1]], c = carrierOf(p[1]);
       var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span>' + (p[2] ? pill(p) : '') + '<span class="ptrip">' + t.name + '｜' + t.sub + '</span></div>';
-      h2 += c.out ? passes(c, p[0], k) : '<p class="note">' + (c.pending || '自行處理機票，表上沒有航班資料。') + '</p>';
+      h2 += c.out ? passes(c, p[0], k) + '<p class="note">回程：特早鳥和大團搭同一班飛機</p>' :'<p class="note">' + (c.pending || '自行處理機票，表上沒有航班資料。') + '</p>';
       h2 += '<a class="back" href="#' + k + '/' + encodeURIComponent(p[0]) + '">看' + t.name + '完整名單 ›</a></div>';
       res.innerHTML = h2;
     }
@@ -474,8 +482,7 @@
       var c = CARRIERS[ck];
       var inC = list.filter(function(p){ return c.tickets.indexOf(p[1]) !== -1; });
       h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span>' + ' <span class="note">' + inC.length + ' 人</span>' + (c.warn ? '<span class="warn-note">' + c.warn + '</span>' : '') + '</div>';
-      if (c.backTitle) h += '<div class="note">' + c.backTitle + '</div>';
-      if (c.out) h += passes(c, inC.length, k);
+      if (c.out) h += passes(c, inC.length, k, 'out');
       else if (c.pending) h += '<p class="warn-note">' + c.pending + '</p>';
       c.tickets.forEach(function(tkKey){
         var ppl = list.filter(function(p){ return p[1] === tkKey; });
@@ -487,6 +494,27 @@
       });
       h += '</section>';
     });
+
+    // 3. 回程：兩團同一班，名單合在一起（本團排前面）
+    var rets = RETURNS.filter(function(R){ return R.carriers.some(function(ck){ return t.carriers.indexOf(ck) !== -1; }); });
+    if (rets.length){
+      h += '<div class="step-h"><h2>回程・特早鳥＋大團同一班</h2></div>';
+      rets.forEach(function(R){
+        var c = CARRIERS[R.carriers[0]];
+        var groups = ['early','main'].sort(function(a, b){ return (b === k) - (a === k); }).map(function(tk){
+          return { trip:tk, ppl:PEOPLE[tk].filter(function(p){ return R.carriers.some(function(ck){ return CARRIERS[ck].tickets.indexOf(p[1]) !== -1; }); }) };
+        });
+        var n = groups.reduce(function(s, g){ return s + g.ppl.length; }, 0);
+        var sub = groups.map(function(g){ return TRIPS[g.trip].name + ' ' + g.ppl.length; }).join('＋');
+        h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + R.name + '</span> <span class="note">' + n + ' 人（' + sub + '）</span></div>';
+        h += passes(c, { n:n, sub:sub }, k, 'back');
+        groups.forEach(function(g){
+          h += '<div class="tix ' + TRIP_CLS[g.trip] + '"><div class="tix-h"><span class="chip">' + TRIPS[g.trip].name + '</span><span class="count">' + g.ppl.length + ' 人</span></div>' +
+            '<div class="names">' + g.ppl.map(function(p){ return '<div class="n" data-n="' + p[0] + '"><span class="nn">' + p[0] + '</span></div>'; }).join('') + '</div></div>';
+        });
+        h += '</section>';
+      });
+    }
     h += '<a class="back" href="#">‹ 回到選團</a>';
     app.innerHTML = h;
     if (focus){
