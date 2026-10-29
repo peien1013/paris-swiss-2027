@@ -310,7 +310,7 @@
     indiv:{ label:'個別票', cls:'t-indiv', note:'10/27 開票' },
     prem:{ label:'豪華經濟艙', cls:'t-prem', note:'已購買' },
     biz:{ label:'商務艙', cls:'t-biz', note:'已購買' },
-    eco:{ label:'經濟艙+', cls:'t-eco', warn:'表上沒寫是否已買' },
+    eco:{ label:'經濟艙+', cls:'t-eco', note:'已購買' },
     ek:{ label:'阿聯酋・桃園出', cls:'t-ek' },
     paris:{ label:'大團・國泰', cls:'t-paris' },
     parisek:{ label:'大團・阿聯酋', cls:'t-ek' },
@@ -324,7 +324,7 @@
       ['黃薰萱','indiv','10/27 開票'],['黃薰儀','indiv','10/27 開票'],['吳青蓉','indiv','10/27 開票'],['黃楠幃','indiv','10/27 開票'],['許怡節','indiv','10/27 開票'],['邱進榮','indiv','10/27 開票'],['陳茂盛','indiv','10/27 開票'],
       ['王晨熙','prem','已購買'],['王昱程','prem','已購買'],['許巧琳','prem','已購買'],['林孝恩','prem','已購買'],['劉蘭瑛','prem','已購買'],
       ['王人美','biz','已購買'],['洪儷娟','biz','已購買'],['洪勝全','biz','已購買'],
-      ['賴憶晴','eco','沒寫是否已買',1],['賴駿宏','eco','沒寫是否已買',1],['賴黃寶素','eco','沒寫是否已買',1],
+      ['賴憶晴','eco','已購買'],['賴駿宏','eco','已購買'],['賴黃寶素','eco','已購買'],
       ['宋文賢','ek'],['韋俞丞','ek'],['廖釗儷','ek']
     ],
     main:[
@@ -416,9 +416,8 @@
         '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
     }).join('') + '</div>';
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
-    h += '<section class="todo"><h2>還沒搞定（2 件）</h2><ul>' +
-      '<li><b>劉月珠、劉姸廷</b>（大團・阿聯酋）商務艙還沒買</li>' +
-      '<li><b>賴憶晴、賴駿宏、賴黃寶素</b>（特早鳥・經濟艙+）表上沒寫是否已買</li></ul></section>';
+    h += '<section class="todo"><h2>還沒搞定（1 件）</h2><ul>' +
+      '<li><b>劉月珠、劉姸廷</b>（大團・阿聯酋）商務艙還沒買</li></ul></section>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
