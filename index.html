@@ -97,6 +97,7 @@
 
   .todo{background:var(--surface);border-radius:22px;padding:18px 24px;box-shadow:var(--shadow);border-top:4px solid var(--warn)}
   .todo h2{font-size:19px;color:var(--warn);margin-bottom:6px}
+  .todo.done{border-top-color:var(--ok)} .todo.done h2{color:var(--ok)}
   .todo ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:2px}
 
   .search{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -335,8 +336,8 @@
     ],
     main:[
       ['黃怡潔','paris','已訂機票'],['陳畇臻','paris','已訂機票'],['陳林𪧓鐘','paris','已訂機票'],['張愷芳','paris','已訂機票'],
-      ['詹秀鑾','paris','護照已給'],['王俐涵','paris','已訂機票'],['林偉龍','paris','已訂機票'],
-      ['劉月珠','parisek','商務艙未購買',1],['劉姸廷','parisek','商務艙未購買',1]
+      ['詹秀鑾','paris','已訂機票'],['王俐涵','paris','已訂機票'],['林偉龍','paris','已訂機票'],
+      ['劉月珠','parisek','商務艙已訂'],['劉姸廷','parisek','商務艙已訂']
     ],
     self:[['吳孟容','self'],['林煒智','self'],['原佩蘭','self'],['劉李腰','self']]
   };
@@ -424,8 +425,8 @@
         '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
     }).join('') + '</div>';
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
-    h += '<section class="todo"><h2>還沒搞定（1 件）</h2><ul>' +
-      '<li><b>劉月珠、劉姸廷</b>（大團・阿聯酋）商務艙還沒買</li></ul></section>';
+    h += '<section class="todo done"><h2>✅ 全部搞定</h2><ul>' +
+      '<li>特早鳥＋大團 49 人的機票都已訂好（已對過美最時行程單）</li></ul></section>';
     h += '<p class="foot">資料取自試算表「名單」「工作表2」，整理於 2026/10/27</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
